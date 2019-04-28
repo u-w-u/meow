@@ -1,0 +1,169 @@
+# Meow Tutorial
+
+Este es un tutorial para ser un buen coder.
+
+## Copiar y Pegar
+
+copiar en un registro
+ver registros
+pegar un registro
+
+## Seesiones en vim
+
+## Setear la ruta actual de trabajo
+globalmente
+:cd %:p:h
+:pwd
+solo en el windows actual
+:lcd %:p:h
+
+## romper lineas   
+:set wrap
+:set nowrap
+
+## Cambiar de clorscheme
+:colorscheme OceanicNext
+:set backgroud=light
+
+## cambiar el thema del lightline
+
+mi mama me mima
+
+## refresh screen
+:redraw
+
+## resaltar linea actual
+
+:set cursorline
+
+## ocultar numero de linea
+:set nonumber  
+:set number
+
+## mostrar los caracteres problematicos 
+:set list
+:set list!
+
+## Denite accesos de teclado
+
+
+## cambiar de bufer abierto
+<space>b
+
+## ver los archivos recientes
+<space>e
+
+## ver los archivos de la carpeta actual
+<space>f
+
+## ver los cambios
+<space>u
+
+## cambiar el colorscheme  
+
+# Meow Tutorial
+
+Este es un tutorial para ser un buen coder.
+
+## Copiar y Pegar
+
+copiar en un registro
+ver registros
+pegar un registro
+
+## Seesiones en vim
+
+
+## Setear la ruta actual de trabajo
+globalmente
+:cd %:p:h
+:pwd
+solo en el windows actual
+:lcd %:p:h
+
+## romper lineas   
+:set wrap
+:set nowrap
+
+## Cambiar de clorscheme
+:colorscheme OceanicNext
+:set backgroud=light
+
+## cambiar el thema del lightline
+
+mi mama me mima
+
+## refresh screen
+:redraw
+
+## resaltar linea actual
+:set cursorline
+
+## ocultar numero de linea
+:set nonumber  
+:set number
+
+## mostrar los caracteres problematicos 
+:set list
+:set list!
+
+## Denite accesos de teclado
+
+
+
+
+## cambiar de bufer abierto
+<space>b
+
+## ver los archivos recientes
+<space>e
+
+## ver los archivos de la carpeta actual
+<space>f
+
+## ver los cambios
+<space>u
+
+## BORRAR INUTIL cambiar el colorscheme
+## mejor abrir la consola o algo similar
+<space>c
+
+## lista de comandos INUTIL
+<space>k
+
+## historia de comandos puede que tambien INUTIL
+<space>:
+
+## Busquedas
+/
+
+## Limpiar coincidencia de busqueda
+## buscar directorio <space>cd 
+
+``` php
+<?php
+    echo "Mi nombre es";
+    function hola(){
+        $fio = 20;
+        $ho = 43;
+        return $fio + $ho;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
