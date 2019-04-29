@@ -1,3 +1,64 @@
+*meow* for NeoVim/Vim version 4.0.1/8.1. Modified: 2019 May 01
+
+
+		Meow Vim Distribution by Edwin M. Cerrón Angeles ~
+
+Meow Vim Distribution                    *meow*
+
+Meow is a carefully designed selective contrast colorscheme with dual
+light and dark modes that runs in both GUI, 256 and 16 color modes.
+
+See the homepage at http://ethanschoonover.com/meow for screenshots and 
+details.
+
+0. Install				|meow-install|
+1. Meow Menu			|meow-menu|
+2. Options				|meow-options|
+3. Toggle Background			|meow-togglebg|
+4. Terminal Issues			|meow-term|
+
+==============================================================================
+0. Install						*meow-install*
+
+Note: I recommend using Tim Pope's pathogen plugin to install this 
+colorscheme. See https://github.com/tpope/vim-pathogen . If you've installed 
+pathogen properly you can install Meow with the following commands, 
+followed by the .vimrc configuration below.
+
+	$ cd ~/.vim/bundle
+	$ git clone https://github.com/altercation/vim-colors-meow.git
+
+If you aren't using pathogen, you can use the following three steps to install 
+Meow:
+
+1.  Download the meow distribution (available on the homepage above)
+    and unarchive the file.
+
+2.  Move `meow.vim` to your `.vim/colors` directory.
+
+3.  Move each of the files in each subdirectories to the corresponding .vim
+    subdirectory (e.g. autoload/togglebg.vim goes into your .vim/autoload
+    directory as .vim/autoload/togglebg.vim).
+
+
+After installation, place the following lines in your .vimrc:
+
+	syntax enable
+	set background=dark
+	colorscheme meow
+
+or, for the light background mode of Meow:
+
+	syntax enable
+	set background=light
+	colorscheme meow
+
+==============================================================================
+1. Meow Menu					*meow-menu*
+
+Meow makes available a menu when used in Vim GUI mode (gvim, macvim).  
+
+
 # Meow Tutorial
 
 Este es un tutorial para ser un buen coder.
