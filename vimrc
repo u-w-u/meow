@@ -12,15 +12,15 @@ if &compatible
 	set nocompatible
 endif
 
-set runtimepath+=/home/uwu/.vim/.cache/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.vim/bundles/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state('/home/uwu/.vim/.cache/dein')
-	call dein#begin('/home/uwu/.vim/.cache/dein')
+if dein#load_state('~/.vim/bundles/dein')
+	call dein#begin('~/.vim/bundles/dein')
 
 	" Let dein manage dein
 	" Required:
-	call dein#add('/home/uwu/.vim/.cache/dein/repos/github.com/Shougo/dein.vim')
+	call dein#add('~/.vim/bundles/dein/repos/github.com/Shougo/dein.vim')
 
 	" UI
 	call dein#add('ryanoasis/vim-devicons')
@@ -29,16 +29,23 @@ if dein#load_state('/home/uwu/.vim/.cache/dein')
 	call dein#add('Shougo/denite.nvim')
 	call dein#add('Shougo/junkfile.vim')
 	call dein#add('Shougo/neomru.vim')
+  " FZF
+  call dein#add('junegunn/fzf', { 'build': './install --all', 'merged': 0 }) 
+  call dein#add('junegunn/fzf.vim', { 'depends': 'fzf' })
 	" COMPLENTION
-	call dein#add('ncm2/ncm2')
-	call dein#add('roxma/nvim-yarp')
+  " Latex
+	call dein#add('lervag/vimtex')
+  " Vim
+	call dein#add('Shougo/neco-vim')
+	call dein#add('neoclide/coc-neco')
+	call dein#add('neoclide/coc.nvim') " do: ./install.sh ./install.cmd
 	if !has('nvim')
+	  call dein#add('roxma/nvim-yarp')
 		call dein#add('roxma/vim-hug-neovim-rpc')
 	endif
-	call dein#add('SirVer/ultisnips')
+	" call dein#add('SirVer/ultisnips')
+  " cambiar esta linea a solo snippets de un typo
 	call dein#add('honza/vim-snippets')
-	call dein#add('ncm2/ncm2-ultisnips')
-	call dein#add('ncm2/ncm2-path')
 	" EXPLORER
 	call dein#add('Shougo/defx.nvim')
 	call dein#add('kristijanhusak/defx-git')
@@ -46,29 +53,29 @@ if dein#load_state('/home/uwu/.vim/.cache/dein')
 	" FREE DISTRACTION MODE
 	call dein#add('junegunn/goyo.vim')
 	call dein#add('junegunn/limelight.vim')
-	" GIT
-	call dein#add('tpope/vim-fugitive')
-	call dein#add('airblade/vim-gitgutter')
-	call dein#add('gregsexton/gitv')
-	" LANGUAGE: vim
-	call dein#add('Shougo/neco-vim')
-	" LINTER
-	call dein#add('w0rp/ale.git')
 	" EDITING
 	call dein#add('chrisbra/NrrwRgn')
 	call dein#add('tpope/vim-surround')
 	call dein#add('scrooloose/nerdcommenter')
 	call dein#add('godlygeek/tabular')
+	call dein#add('Raimondi/delimitMate')
+	" GIT
+	call dein#add('tpope/vim-fugitive')
+	call dein#add('airblade/vim-gitgutter')
+	call dein#add('gregsexton/gitv')
+	" LINTER
+	"call dein#add('w0rp/ale.git')
+  " PROJECT
+	call dein#add('dunstontc/projectile.nvim')
+	" LANGUAGE: vim
 	" TAGBAR
 	call dein#add('majutsushi/tagbar')
-	call dein#add('Raimondi/delimitMate')
 	"call dein#add('StanAngeloff/php.vim')
 	"call dein#add('leafgarland/typescript-vim')
 	" LANGUAGE: html
 	call dein#add('mattn/emmet-vim')
 	" LANGUAGE: go
-	call dein#add('fatih/vim-go',{
-				\'rev': 'v1.20', 'on_ft': 'go'})
+	call dein#add('fatih/vim-go',{'rev': 'v1.20', 'on_ft': 'go'})
 	" Required:
 	call dein#end()
 	call dein#save_state()
@@ -360,17 +367,6 @@ set splitright
 " }
 
 " lightline {{{
-let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
-      \ },
-    \ }
-
 function! MyFiletype()
   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
 endfunction
@@ -384,12 +380,20 @@ function! MyFileformat()
   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
 
-let g:lightline.component_function = {
+let g:lightline = {
+      \ 'colorscheme': 'gruvbox',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'cocstatus'] ]
+      \ },
+      \ 'component_function': {
       \   'gitbranch': 'MyGit',
       \   'filetype': 'MyFiletype',
       \   'fileformat': 'MyFileformat',
-      \ }
-
+      \   'cocstatus': 'coc#status',
+      \ },
+    \ }
+" TODO: Se necesita mejorar la apariencia de coc#status <01-05-19, yourname> "
 " }}}
 
 " denite {
@@ -497,42 +501,43 @@ call denite#custom#source('file_mru,file/rec,file_old,buffer,directory_rec', 'co
 "endif
 " }
 
-" ncm2 {
-" enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
-"set completeopt=noinsert,menuone,noselect
-set completeopt=noinsert,menuone
-let g:ncm2#match_highlight = 'mono-space'
+" coc {
+
+" Use <C-l> for trigger snippet expand.
+"imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+"vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+"let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+"imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+inoremap <silent><expr> <c-space> coc#refresh()
+"autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
 " }
 
-" UltiSnips + ncm2 { 
-" We don't really want UltiSnips to map these two, but there's no option for
-" that so just make it map them to a <Plug> key.
-let g:UltiSnipsExpandTrigger       = "<Plug>(ultisnips_expand_or_jump)"
-let g:UltiSnipsJumpForwardTrigger  = "<Plug>(ultisnips_expand_or_jump)"
-" Let UltiSnips bind the jump backward trigger as there's nothing special
-" about it.
-let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
-" Try expanding snippet or jumping with UltiSnips and return <Tab> if nothing
-" worked.
-function! UltiSnipsExpandOrJumpOrTab()
-  call UltiSnips#ExpandSnippetOrJump()
-  if g:ulti_expand_or_jump_res > 0
-    return ""
-  else
-    return "\<Tab>"
-  endif
-endfunction
-" First try expanding with ncm2_ultisnips. This does both LSP snippets and
-" normal snippets when there's a completion popup visible.
-inoremap <silent> <expr> <Tab> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_try_expand)")
-" If that failed, try the UltiSnips expand or jump function. This handles
-" short snippets when the completion popup isn't visible yet as well as
-" jumping forward from the insert mode. Writes <Tab> if there is no special
-" action taken.
-inoremap <silent> <Plug>(ultisnips_try_expand) <C-R>=UltiSnipsExpandOrJumpOrTab()<CR>
-" Select mode mapping for jumping forward with <Tab>.
-snoremap <silent> <Tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<cr>
+" Language Client {
+"let g:LanguageClient_diagnosticsEnable=0 "Para usar con ALE
 " }
 
 " Windows {
@@ -791,7 +796,6 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " Go {
 let g:go_term_mode = "vsplit"
-
 
 " }
 

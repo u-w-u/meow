@@ -26,9 +26,8 @@
 **Table of Contents**
 
 - [Introduction](#introduction)
-- [Features](#features)
 - [Install](#install)
-- [Update](#update)
+- [documentation](#documentation)
 
 <!-- markdown-toc end -->
 
@@ -36,49 +35,27 @@
 
 Neovim/Vim8 modern,light and powerful distribution.
 
-# Features
-
-- Full customize in one file
-- Support for vim 8 and neovim
-- Use native vim plugin manager
-- Activate package of demand
-- Very tiny core packages
-- [] Code completion
-- [] Linter
-- [] Task manager
-- [] Note talking
-- languages support on demand
- - []HTML
-  - Emmet
- - []CSS
-  - Emmet
- - []SCSS
-  - Emmet
- - []Go
- - []Python
- - []PHP
- - []Markdown
- - []Latex
- - []SQL
- - []Javascript
- - []Typescript
- - []Kotlin
- - []Java
- - []C/C++
- - []Haskell
- - []Bash
- - []XML
-- []Database support
-- []Debugger
-- Spell checker
-- Language checker
-- Search
-- File Explorer
-
+Minimal environment of work 
+|-------|-----------|--|---
+M       e           o  w
 
 # Install
 
-pip3 install --upgrade neovim
+## Requeriments
+
+    curl -sL install-node.now.sh/lts | sh
+    # Optional install yarn if you want install extension by CocInstall command
+    curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+
+- Python3.6.1+.
+- python 3 (instalar el python correspondiente a la compilacion de vim)
+- vim 8 with :echo has('python3') = 1
+- install neovim
+- pip3 install --user pynvim
+- pip3 install --user Send2Trash
+- nert font (https://github.com/ryanoasis/nerd-fonts)
+
+pip3 install --upgrade pynvim
 sudo apt install global
 sudo apt install ctags
 sudo apt install ag
@@ -89,27 +66,6 @@ install gtags
  make
  sudo make install
 
-
-
-# Update
-
-## Probar
-
-- https://github.com/wincent/ferret
-- https://github.com/vim-vdebug/vdebug
-
-
-## Requeriments
-
-- Python3.6.1+.
-- python 3 (instalar el python correspondiente a la compilacion de vim)
-- vim 8 with :echo has('python3') = 1
-- install neovim
-- pip3 install --user neovim
-- pip3 install --user pynvim
-- pip3 install --user Send2Trash
-- nert font (https://github.com/ryanoasis/nerd-fonts)
-
 ## Install
 
 ### Linux
@@ -117,6 +73,8 @@ install gtags
 git clone https://github.com/u-w-u/meow.git ~/.vim
 git submodule init && git submodule update
 .meow
+
+:call coc#util#install() 
 
 init.vim ("vimrc"): If you already have Vim installed you can copy %userprofile%\_vimrc to %userprofile%\AppData\Local\nvim\init.vim to use your Vim config with Neovim.
 
@@ -139,45 +97,28 @@ Language Client
 cd pack/core/start/language-client
 ./install.sh
 
+
+##fonts
+
+https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/SourceCodePro.zip
+https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/FiraMono.zip
+https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/FiraCode.zip
+
 ## Add new packcages
 
 git submodule add https://github.com/a ...  pack/core/opt/flipe
 
 
-## Borrar submodule
+# use dein:
+
+dein#check_clean()
+dein#recache_runtimepath()
 
 
+## Iconos de la fuente
 
-## Plugins
-
-### UI improves 
-
-- denite.nvim 
-- lightline
-- goyo 
-
-### Languages
-
-- PHP
-- Python
-- Go
-- SQL
-
-
-### Frameworks
-
-### Tools
-
-### Checker
-
-### Completion
-
-### Misc
-
-## Configuration
-
-~/.meow 
-
+https://unix.stackexchange.com/questions/61118/how-to-enter-non-ascii-characters-using-hex-or-octal-codes-in-vi
+https://nerdfonts.com/#cheat-sheet
 
 
 Cosas por hacer
