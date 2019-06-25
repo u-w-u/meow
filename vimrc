@@ -53,6 +53,14 @@ if dein#load_state('~/.vim/bundles/dein')
 	" FREE DISTRACTION MODE
 	call dein#add('junegunn/goyo.vim')
 	call dein#add('junegunn/limelight.vim')
+	" BUILD AND TEST
+	"call dein#add('tpope/vim-dispatch') " Selecionar uno de estos 1914 stars
+	"call dein#add('neomake/neomake') " Selecionar uno de estos 1914 stars
+  "skywind3000/asyncrun.vim
+	" FORMATER
+  "sbdchd/neoformat
+	" SCRATCHPAD
+	" call dein#add('jmetakirby5/codi.vim') " Probar es muy interesante
 	" EDITING
 	call dein#add('chrisbra/NrrwRgn')
 	call dein#add('tpope/vim-surround')
@@ -70,12 +78,27 @@ if dein#load_state('~/.vim/bundles/dein')
 	" LANGUAGE: vim
 	" TAGBAR
 	call dein#add('majutsushi/tagbar')
-	"call dein#add('StanAngeloff/php.vim')
-	"call dein#add('leafgarland/typescript-vim')
+	" LANGUAGE: markdown
+	call dein#add('plasticboy/vim-markdown',{'on_ft': ['md','markdown',"mkd"]})
 	" LANGUAGE: html
 	call dein#add('mattn/emmet-vim')
 	" LANGUAGE: go
 	call dein#add('fatih/vim-go',{'rev': 'v1.20', 'on_ft': 'go'})
+	" LANGUAGE: org
+	call dein#add('vim-scripts/utl.vim')
+	call dein#add('tpope/vim-speeddating')
+	call dein#add('inkarkat/vim-ingo-library')
+	call dein#add('inkarkat/vim-SyntaxRange')
+	call dein#add('mattn/calendar-vim')
+	call dein#add('tpope/vim-repeat')
+	call dein#add('jceb/vim-orgmode',{'on_ft': 'org'})
+  "dhruvasagar/vim-table-mode
+	" Mapping
+	"call dein#add('tpope/vim-unimpaired')
+  "google/vim-codefmt "formateador
+  "google/vim-syncopate
+  "stgpetrovic/vim-hackernews
+  "google/vim-glaive
 	" Required:
 	call dein#end()
 	call dein#save_state()
@@ -561,49 +584,37 @@ set guioptions-=L  "remove left-hand scroll bar
 " }
 
 " Zen Mode {
-" Default: 0.5
-let g:limelight_default_coefficient = 0.7
+let g:limelight_default_coefficient = 0.7     "(default: 0.5)
+let g:goyo_width=90                           "(default: 80)
+
+if exists( "&background" )
+    let s:save_background = &background
+endif
+
 function! s:markdown_room()
-    set linespace=5
-    if has('gui_running')
-        "set guifont='. s:configure['font']
-    endif
-    "colorscheme '. g:configuration#ui['colorscheme-light']
+    set background=light
+    set linespace=8
 endfunction
 
 function! s:goyo_enter()
-    "set fullscreen
-    set linespace=5
-    set guioptions-=m  "remove menu bar
-    set guioptions-=T  "remove toolbar
-    set guioptions-=r  "remove right-hand scroll bar
-    set guioptions-=L  "remove left-hand scroll bar
     Limelight
-    if !has("gui_running")
-        return
-    endif
-    let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text" || &filetype == "mkd" || &filetype == "md"
+    let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text" || &filetype == "md"
     if is_mark_or_rst
         call s:markdown_room()
     endif
+    " Asegura salir con :q
     let b:quitting = 0
     autocmd QuitPre <buffer> let b:quitting = 1
 endfunction
+
 function! s:goyo_leave()
     Limelight!
-    "colorscheme '.g:configuration#ui['colorscheme-dark']
-    set linespace=0
-    "if g:configuration#ui['gui-minimal'] != 'true'
-        "set guioptions+=m  "add menu bar
-       " set guioptions+=T  "add toolbar
-       " set guioptions+=r  "add right-hand scroll bar
-       " set guioptions+=L  "add left-hand scroll bar
-    "endif
-    if has('gui_running')
-        "set guifont='.g:configuration#ui['font']
-    endif
-    if !has("gui_running")
-        return
+    let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text" || &filetype == "md"
+    if is_mark_or_rst
+        set linespace=0
+        if s:save_background != ""
+            exec( "set background=" . s:save_background )
+        endif
     endif
     " Asegura salir con :q
     if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
@@ -611,19 +622,14 @@ function! s:goyo_leave()
     endif
 endfunction
 
-let g:goyo_width=90             "(default: 80)
-
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 nnoremap <Leader><Space> :Goyo<CR>
-
-
 " }
 
 " File Explorer {
 
- " :Defx -columns=icons:filename:type
 let g:defx_icons_enable_syntax_highlight = 1
 
 let g:defx_git#indicators = {
@@ -697,24 +703,33 @@ function! s:defx_my_settings() abort
   \ defx#do_action('change_vim_cwd')
 endfunction
 
-nnoremap <Leader>f :Defx -columns=git:mark:icons:filename:type -split=vertical -winwidth=50 -direction=topleft -toggle <CR>
-nnoremap <Leader>e :Defx -columns=git:icons:filename:type -split=vertical -winwidth=30 -direction=topleft -toggle <CR>
+nnoremap <Leader>e :Defx -columns=git:mark:icons:filename:type -split=vertical -winwidth=50 -direction=topleft -toggle <CR>
+nnoremap <Leader>f :Defx -columns=git:icons:filename:type -buffer-name=EXPLORER <CR>
  
 " }
 
 " Search {
-    set incsearch                   " Buscar mientras se escribe la búsqueda
-    set hlsearch                    " Resaltar los términos buscados
-    set ignorecase                  " Busqueda case insensitive
-    set smartcase                   " Busqueda case sensitive cuendo uc esta presente
-    if executable('ack')
-        set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
-        set grepformat=%f:%l:%c:%m
-    endif
-    if executable('ag')
-        set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
-        set grepformat=%f:%l:%c:%m
-    endif
+set incsearch                   " Buscar mientras se escribe la búsqueda
+set hlsearch                    " Resaltar los términos buscados
+set ignorecase                  " Busqueda case insensitive
+set smartcase                   " Busqueda case sensitive cuendo uc esta presente
+if executable('ack')
+  set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+  set grepformat=%f:%l:%c:%m
+endif
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+  set grepformat=%f:%l:%c:%m
+endif
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+  set grepformat=%f:%l:%c:%m
+endif
+
+"nnoremap <silent> [f :lprevious<CR>
+"nnoremap <silent> ]f :lnext<CR>
+"nnoremap <Leader>g :silent lgrep<Space>
+
 " }
 
 " Debug {
